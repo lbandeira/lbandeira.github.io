@@ -352,7 +352,7 @@
  /************************
   CARREGAMENTO DA PAGINA
  *************************/
- connectMqtt();
+ //connectMqtt();
  connectButton.addEventListener("click", connectBluetooth);
  disconnectButton.addEventListener("click", disconnectBluetooth);
  csvButton.addEventListener("click", saveCSV);
