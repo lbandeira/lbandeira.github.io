@@ -46,7 +46,9 @@
             color: #fff;
         }
         button {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin: 20px auto;
             padding: 10px 20px;
             font-size: 16px;
@@ -55,6 +57,9 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+        }
+        button img {
+            margin-right: 5px;
         }
         button:hover {
             background-color: #0056b3;
@@ -72,6 +77,17 @@
             overflow-y: auto;
             white-space: pre-wrap;
         }
+        @media (max-width: 940px) {
+            button {
+                padding: 15px;
+            }
+            button span {
+                display: none;
+            }
+            button img {
+                margin-right: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -79,9 +95,18 @@
         <div class="dashboard">
             <h1>Dashboard de Dados Primarios da Bateria</h1>
             <div style="display: flex; justify-content: space-around;">
-                <button id="connect-bluetooth">Conectar Bluetooth</button>
-                <button id="disconnect-bluetooth" disabled style="background-color: #ccc;">Desconectar Bluetooth</button>
-                <button id="save-csv" style="background-color: #006EC7;">Salvar em CSV</button>
+                <button id="connect-bluetooth">
+                    <img src="icons/connect.png" alt="Connect" style="width: 16px; height: 16px;">
+                    <span>Conectar</span>
+                </button>
+                <button id="disconnect-bluetooth" disabled style="background-color: #ccc;">
+                    <img src="icons/disconnect.png" alt="Disconnect" style="width: 16px; height: 16px;">
+                    <span>Desconectar</span>
+                </button>
+                <button id="save-csv" style="background-color: #006EC7;">
+                    <img src="icons/save.png" alt="Save" style="width: 16px; height: 16px;">
+                    <span>Salvar</span>
+                </button>
             </div>
             <div id="chart-container">
                 <canvas id="chart"></canvas>
