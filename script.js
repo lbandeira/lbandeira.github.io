@@ -61,6 +61,55 @@
          }
      });
  }
+function createChartWithFilter() {
+    const chartContainer = document.getElementById("chart-container");
+    const filterContainer = document.createElement("div");
+    filterContainer.id = "filter-container";
+    filterContainer.style.textAlign = "center"; // Centraliza o filtro
+
+    const labels = ['Tensão (V)', 'Corrente (A)', 'Temperatura (°C)'];
+    const datasets = [
+        { label: 'Tensão (V)', data: [], borderColor: 'rgba(75, 192, 192, 1)', backgroundColor: 'rgba(75, 192, 192, 0.2)', borderWidth: 2, fill: true },
+        { label: 'Corrente (A)', data: [], borderColor: 'rgba(255, 99, 132, 1)', backgroundColor: 'rgba(255, 99, 132, 0.2)', borderWidth: 2, fill: true },
+        { label: 'Temperatura (°C)', data: [], borderColor: 'rgba(54, 162, 235, 1)', backgroundColor: 'rgba(54, 162, 235, 0.2)', borderWidth: 2, fill: true }
+    ];
+
+    labels.forEach((label, index) => {
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.id = `filter-${index}`;
+        checkbox.checked = true;
+        checkbox.addEventListener("change", () => {
+            chart.data.datasets[index].hidden = !checkbox.checked;
+            chart.update();
+        });
+
+        const labelElement = document.createElement("label");
+        labelElement.htmlFor = `filter-${index}`;
+        labelElement.innerText = label;
+
+        filterContainer.appendChild(checkbox);
+        filterContainer.appendChild(labelElement);
+    });
+
+    chartContainer.insertBefore(filterContainer, chartContainer.firstChild);
+
+    chart = new Chart(chartCtx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: { title: { display: true, text: 'Tempo' } },
+                y: { title: { display: true, text: 'Valores' } }
+            }
+        }
+    });
+}
+
  function updateChart() {
      chart.data.labels = dataPoints.map((_, index) => `T${index + 1}`);
      chart.data.datasets[0].data = dataPoints.map(dp => dp.tensao);
@@ -340,4 +389,5 @@
  connectButton.addEventListener("click", connectBluetooth);
  disconnectButton.addEventListener("click", disconnectBluetooth);
  csvButton.addEventListener("click", saveCSV);
- createChart();
+//  createChart();
+createChartWithFilter();
