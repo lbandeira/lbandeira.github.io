@@ -204,7 +204,9 @@
          terminal.innerText += '> Notificações habilitadas\n';
          sendString("0"); // Envia "0" para inicializar comunicação
          disconnectButton.disabled = false;
+         disconnectButton.style.background = "#00247D";
          connectButton.disabled = true;
+         connectButton.style.background = "#CCC";
      } catch (error) {
          terminal.innerText += `> ERRO: ${error.message}\n`;
      }
@@ -218,6 +220,11 @@
      if (bleDevice.gatt.connected) {
          bleDevice.gatt.disconnect();
          terminal.innerText += '> Bluetooth Device connected: ' + bleDevice.gatt.connected;
+         connectButton.disabled = false;
+         connectButton.style.background = "#00247D";
+
+         disconnectButton.disabled = true;
+         disconnectButton.style.background = "#CCC";
      } else {
          terminal.innerText += '> Bluetooth Device is already disconnected';
      }
