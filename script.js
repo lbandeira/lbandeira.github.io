@@ -72,45 +72,23 @@
  /************************************
   FUNCOES PARA ENVIO DE MENSAGEM MQTT
  *************************************/ 
- function connectMqtt() {
-     client = mqtt.connect('ws://broker.emqx.io:8083/mqtt', {
-         clientId: 'web-client-' + Math.random().toString(16).substr(2, 8),
-         username: 'emqx_test',  // Pode ser deixado vazio para AWS IoT
-         password: 'emqx_test',  // Pode ser deixado vazio para AWS IoT
-         protocolVersion: 4
-     });
+  async function enviarMensagem(input) {
+    // Garantir que input seja um objeto JSON, se for uma string, converta para JSON
+    const parsedInput = typeof input === 'string' ? JSON.parse(input) : input;
+    const resposta = await fetch("https://ocbfey2d2c.execute-api.us-east-1.amazonaws.com/dev/publicar", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        // Ajuste: Enviar o valor da chave mensagem diretamente dentro do corpo
+        body: JSON.stringify({ body: parsedInput })  // Altere "mensagem" para "body"
+    });
 
-     client.on('connect', () => {
-         console.log('Conectado ao MQTT');
-         // terminal.innerText += '> Conectado ao MQTT\n';
-     });
+    const resultado = await resposta.json();
+    console.log(input);
+    console.log(resultado);
+}
 
-     client.on('error', (err) => {
-         console.error('Erro MQTT:', err);
-         // terminal.innerText += '> Erro MQTT: ' + err.message + '\n';
-     });
- }
- function sendMqttMessage(topic, message) {
-     if (!client || !client.connected) {
-     console.error('MQTT não conectado!');
-     // terminal.innerText += '> Erro: MQTT não conectado\n';
-     return;
-     }
-     const qos = 0;
-     const retain = true;
-
-     client.subscribe(topic, { qos }, (error) => {
-     if (error) {
-         console.log('subscribe error:', error);
-         return;
-     }
-     console.log(`Subscribe to topic '${topic}'`);
-     });
-
-     client.publish(topic, JSON.stringify(message), { qos, retain });
-     console.log('Mensagem enviada:', message);
-     // terminal.innerText += '> MQTT enviado: ' + JSON.stringify(message) + '\n';
- }
  function packMessage(eletrolito, temperaturaMedia, tensaoMedia, correnteMedia, correnteMax, empilhadeira, soc, soh, estado, numSeq) {
      
      let warning = 0; // Simulando 'm_mct_lora_data.warning', ajuste conforme necessário
@@ -318,11 +296,11 @@
      // Atualiza os gráficos ou interface com os valores extraídos
      const tempoAtual = new Date().toLocaleTimeString();
      addData(tempoAtual, tensaoPrincipal, corrente, temperatura);
-     
-     let messageToMQTT = packMessage(eletrolito, temperatura, tensaoPrincipal, corrente, 400, 123, 100, 1, estadoBateria, counter);
-     counter++;
-     let deviceNameShort = device.name.substring(6);
-     sendMqttMessage('thing/dragino', {device: deviceNameShort, data: messageToMQTT});
+    let messageToMQTT = packMessage(eletrolito, temperatura, tensaoPrincipal, corrente, 400, 123, 100, 1, 5, counter);
+    counter++;
+    let deviceNameShort = device.name.substring(6);
+    let jsonMessage = JSON.stringify({device: deviceNameShort, data: messageToMQTT} );
+    enviarMensagem(jsonMessage);
  }
 
  /*********************************************
@@ -352,7 +330,6 @@
  /************************
   CARREGAMENTO DA PAGINA
  *************************/
- //connectMqtt();
  connectButton.addEventListener("click", connectBluetooth);
  disconnectButton.addEventListener("click", disconnectBluetooth);
  csvButton.addEventListener("click", saveCSV);
