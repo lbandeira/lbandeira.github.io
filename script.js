@@ -132,10 +132,8 @@ function createChartWithFilter() {
         // Ajuste: Enviar o valor da chave mensagem diretamente dentro do corpo
         body: JSON.stringify({ body: parsedInput })  // Altere "mensagem" para "body"
     });
-
-    const resultado = await resposta.json();
-    console.log(input);
-    console.log(resultado);
+    // const resultado = await resposta.json();
+    // console.log(resultado);
 }
 
  function packMessage(eletrolito, temperaturaMedia, tensaoMedia, correnteMedia, correnteMax, empilhadeira, soc, soh, estado, numSeq) {
@@ -389,5 +387,4 @@ function createChartWithFilter() {
  connectButton.addEventListener("click", connectBluetooth);
  disconnectButton.addEventListener("click", disconnectBluetooth);
  csvButton.addEventListener("click", saveCSV);
-//  createChart();
-createChartWithFilter();
+ createChartWithFilter();
