@@ -1,7 +1,7 @@
 <template>
   <div>
     <header>
-      <h1>Ibandeira</h1>
+      <h1>lbandeira</h1>
       <p>
         Engenheira de sistemas embarcados, maker e apaixonada por inovação. Sou formada em Eng. Computação no Cin-UFPE e mestranda na mesma instituição. Sou uma curiosa que adora inventar “coisas” para auxiliar no dia a dia da humanidade.
       </p>
@@ -24,27 +24,27 @@ export default {
 </script>
 
 <style>
-body {
-  font-family: Arial, sans-serif;
+/* body {
+  font-family: 'Inria Sans', sans-serif;
   line-height: 1.6;
   margin: 0;
   padding: 0;
   background-color: #f4f4f4;
   color: #333;
-}
+} */
 
 header {
-  background-color: #333;
-  color: #fff;
   padding: 20px;
   text-align: center;
 }
 
 header h1 {
   margin: 0;
+  font-size: 50px;
 }
 
 header p {
+  font-family: 'Inder', sans-serif;
   margin: 10px 0 0;
 }
 
@@ -55,8 +55,7 @@ main {
 footer {
   text-align: center;
   padding: 10px;
-  background-color: #333;
-  color: #fff;
+  color: #333;
   position: fixed;
   width: 100%;
   bottom: 0;

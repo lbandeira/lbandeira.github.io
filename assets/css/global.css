@@ -1,0 +1,111 @@
+/* Importação das fontes Inria Sans e Inder do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&family=Inder&display=swap');
+
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+/* Estilos globais */
+body {
+  font-family: 'Inder', sans-serif; /* Aplica a fonte Inder para o corpo do texto */
+  background-color: #F3EBEB;
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  font-family: 'Inria Sans', sans-serif; /* Aplica a fonte Inria Sans para o cabeçalho */
+  background-color: #F3EBEB;
+  color: #333;
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+}
+
+header p {
+  margin: 10px 0 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 1rem;
+  line-height: 1.2;
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul, ol {
+  margin: 0 0 1rem;
+  padding-left: 1.5rem;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Classes de utilidade */
+.mt-1 { margin-top: 0.5rem; }
+.mb-1 { margin-bottom: 0.5rem; }
+.pt-1 { padding-top: 0.5rem; }
+.pb-1 { padding-bottom: 0.5rem; }
+
+.text-primary { color: #007bff; }
+.text-secondary { color: #6c757d; }
+
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+/* Formulários */
+input, button, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+}
