@@ -3,7 +3,7 @@
     <header>
       <h1>lbandeira</h1>
       <p>
-        Engenheira de sistemas embarcados, maker e apaixonada por inovação. Sou formada em Eng. Computação no Cin-UFPE e mestranda na mesma instituição. Sou uma curiosa que adora inventar “coisas” para auxiliar no dia a dia da humanidade.
+        Sou <strong>Laís Bandeira</strong> (ela/dela), engenheira da computação, desenvolvedora de software embarcado, maker e apaixonada por inovação. 
       </p>
     </header>
 
