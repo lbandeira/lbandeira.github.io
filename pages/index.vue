@@ -3,7 +3,7 @@
     <section id="about">
       <BioSection />
     </section>
-    <section id="projects">
+    <!-- <section id="projects">
       <ProjectsSection />
     </section>
     <section id="experience">
@@ -14,7 +14,7 @@
     </section>
     <section id="contact">
       <ContactSection />
-    </section>
+    </section> -->
   </div>
 </template>
 

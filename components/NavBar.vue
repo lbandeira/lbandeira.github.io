@@ -9,9 +9,10 @@
 
         <!-- Menu -->
         <div class="hidden md:flex space-x-6">
-          <NuxtLink to="/" class="text-gray-700 hover:text-blue-500">Início</NuxtLink>
-          <NuxtLink to="/sobre" class="text-gray-700 hover:text-blue-500">Sobre</NuxtLink>
+          <NuxtLink to="/" class="text-gray-700 hover:text-blue-500">Sobre</NuxtLink>
+          <NuxtLink to="/experiencia" class="text-gray-700 hover:text-blue-500">Experiência</NuxtLink>
           <NuxtLink to="/projetos" class="text-gray-700 hover:text-blue-500">Projetos</NuxtLink>
+          <NuxtLink to="/publicacoes" class="text-gray-700 hover:text-blue-500">Publicações</NuxtLink>
           <NuxtLink to="/contato" class="text-gray-700 hover:text-blue-500">Contato</NuxtLink>
         </div>
       </div>
