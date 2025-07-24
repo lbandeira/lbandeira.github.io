@@ -1,45 +1,31 @@
 <template>
-    <div>
-      <section id="educacao">
-        <h2>Educação</h2>
-        <ul>
-          <li>Engenharia de Computação - Cin-UFPE</li>
-          <li>Mestranda em Engenharia de Computação - Cin-UFPE</li>
-        </ul>
-      </section>
-  
-      <section id="experiencia">
-        <h2>Experiência</h2>
-        <ul>
-          <li>Engenheira de Sistemas Embarcados - Empresa X</li>
-          <li>Projetos de Inovação - Projeto Y</li>
-        </ul>
-      </section>
-  
-      <section id="projetos">
-        <h2>Projetos</h2>
-        <ul>
-          <li>Projeto A - Descrição breve</li>
-          <li>Projeto B - Descrição breve</li>
-        </ul>
-      </section>
-  
-      <section id="extracurricular">
-        <h2>Extracurricular</h2>
-        <ul>
-          <li>Participação em Hackathons</li>
-          <li>Voluntariado em Projetos Sociais</li>
-        </ul>
-      </section>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    name: 'HomePage',
-    layout: 'default',
-  };
-  </script>
+  <div>
+    <section id="about">
+      <BioSection />
+    </section>
+    <section id="projects">
+      <ProjectsSection />
+    </section>
+    <section id="experience">
+      <ExperienceSection />
+    </section>
+    <section id="publications">
+      <PublicationsSection />
+    </section>
+    <section id="contact">
+      <ContactSection />
+    </section>
+  </div>
+</template>
+
+<script setup>
+import BioSection from '~/components/BioSection.vue'
+// import ProjectsSection from '~/components/ProjectsSection.vue'
+// import ExperienceSection from '~/components/ExperienceSection.vue'
+// import PublicationsSection from '~/components/PublicationsSection.vue'
+// import ContactSection from '~/components/ContactSection.vue'
+</script>
+
   
   <style scoped>
   section {

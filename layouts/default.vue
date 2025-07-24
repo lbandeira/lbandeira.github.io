@@ -1,21 +1,24 @@
 <template>
-  <div>
-    <header>
-      <h1>lbandeira</h1>
-      <p>
-        Sou <strong>Laís Bandeira</strong> (ela/dela), engenheira da computação, desenvolvedora de software embarcado, maker e apaixonada por inovação. 
-      </p>
-    </header>
+  <div class="flex min-h-screen bg-white text-gray-800">
+    <!-- Sidebar -->
+    <nav class="w-60 bg-gray-100 p-6 space-y-6 sticky top-0 h-screen">
+      <h2 class="text-xl font-bold mb-4">lbandeira</h2>
+      <ul class="space-y-2">
+        <li><a href="#about" class="hover:underline">Sobre mim</a></li>
+        <li><a href="#projects" class="hover:underline">Projetos</a></li>
+        <li><a href="#experience" class="hover:underline">Experiência</a></li>
+        <li><a href="#publications" class="hover:underline">Publicações</a></li>
+        <li><a href="#contact" class="hover:underline">Contato</a></li>
+      </ul>
+    </nav>
 
-    <main>
-      <slot />
-    </main>
-
-    <footer>
-      <p>&copy; 2023 Ibandeira. Todos os direitos reservados.</p>
-    </footer>
+    <!-- Content -->
+    <div class="flex-1 overflow-y-auto p-8 space-y-24">
+      <NuxtPage />
+    </div>
   </div>
 </template>
+
 
 <script>
 export default {
