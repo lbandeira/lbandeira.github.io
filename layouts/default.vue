@@ -1,16 +1,16 @@
 <template>
-  <div class="flex min-h-screen bg-white text-gray-800">
-    <!-- Sidebar -->
-    <nav class="w-60 bg-gray-100 p-6 space-y-6 sticky top-0 h-screen">
-      <h2 class="text-xl font-bold mb-4">lbandeira</h2>
-      <ul class="space-y-2">
-        <li><a href="#about" class="hover:underline">Sobre mim</a></li>
-        <li><a href="#projects" class="hover:underline">Projetos</a></li>
-        <li><a href="#experience" class="hover:underline">Experiência</a></li>
-        <li><a href="#publications" class="hover:underline">Publicações</a></li>
-        <li><a href="#contact" class="hover:underline">Contato</a></li>
+  <div class="flex min-h-screen bg-[#F3EBEB] text-gray-800">
+    <!-- Sidebar
+    <nav class="w-60 bg-[#C4E3D0] p-6 space-y-6 sticky top-0 h-screen">
+      <h2 class="text-xl font-bold mb-4 text-[#A6D0E4]">lbandeira</h2>
+      <ul class="space-y-2 text-[#444]">
+        <li><a href="#about" class="hover:text-[#F99D9D] hover:underline">Sobre mim</a></li>
+        <li><a href="#projects" class="hover:text-[#F99D9D] hover:underline">Projetos</a></li>
+        <li><a href="#experience" class="hover:text-[#F99D9D] hover:underline">Experiência</a></li>
+        <li><a href="#publications" class="hover:text-[#F99D9D] hover:underline">Publicações</a></li>
+        <li><a href="#contact" class="hover:text-[#F99D9D] hover:underline">Contato</a></li>
       </ul>
-    </nav>
+    </nav> -->
 
     <!-- Content -->
     <div class="flex-1 overflow-y-auto p-8 space-y-24">
@@ -19,7 +19,6 @@
   </div>
 </template>
 
-
 <script>
 export default {
   name: 'DefaultLayout',
@@ -27,40 +26,10 @@ export default {
 </script>
 
 <style>
-/* body {
+/* Tipografia global (pode ser adaptada ao tailwind.config se desejar) */
+body {
   font-family: 'Inria Sans', sans-serif;
   line-height: 1.6;
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f4;
-  color: #333;
-} */
-
-header {
-  padding: 20px;
-  text-align: center;
-}
-
-header h1 {
-  margin: 0;
-  font-size: 50px;
-}
-
-header p {
-  font-family: 'Inder', sans-serif;
-  margin: 10px 0 0;
-}
-
-main {
-  margin: 20px;
-}
-
-footer {
-  text-align: center;
-  padding: 10px;
-  color: #333;
-  position: fixed;
-  width: 100%;
-  bottom: 0;
+  background-color: #F3EBEB; /* soft background */
 }
 </style>

@@ -1,10 +1,12 @@
 <template>
-  <div>
-    <NavBar />
+  <NuxtLayout>
     <NuxtPage />
-  </div>
+  </NuxtLayout>
 </template>
 
-<script setup>
-import NavBar from '~/components/NavBar.vue'
-</script>
+<style>
+html,
+body {
+  background-color: #F3EBEB;
+}
+</style>

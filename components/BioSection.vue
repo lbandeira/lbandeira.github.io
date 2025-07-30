@@ -1,8 +1,15 @@
 <template>
-  <div class="max-w-3xl">
-    <h1 class="text-3xl font-bold mb-4">Olá, eu sou Laís Bandeira 👋</h1>
-    <p class="text-lg text-gray-700">
-      Engenheira de sistemas embarcados, maker e apaixonada por inovação. Sou formada em Eng. da Computação no CIn-UFPE e mestranda na mesma instituição. Sou uma curiosa que adora inventar "coisas" para auxiliar no dia a dia da humanidade.
+  <img src="../assets/img/cover.png" alt="Cover" class="w-full h-full object-cover rounded-lg mb-6" />
+  <div class="max-w-3xl space-y-4 bg-transparent">
+    <p class="text-lg text-[#4B4B4B]">
+      Formada em 
+      <span class="font-bold text-[#4B4B4B]">
+      Engenharia da Computação 
+      </span>
+      pelo CIn-UFPE, atualmente sou mestranda na mesma instituição, pesquisando soluções para monitoramento em tempo real de sistemas elétricos. Entusiasta na cultura Maker e apaixonada por inovação.
+    </p>
+    <p class="text-lg text-[#4B4B4B]">
+      Movida pela curiosidade e pela vontade de transformar ideias em soluções que facilitem o dia a dia das pessoas.
     </p>
   </div>
 </template>
