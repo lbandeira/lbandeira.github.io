@@ -1,0 +1,1 @@
+import{_ as t,t as o,v as s,x as a,z as c,K as n}from"./C5Nhc5Kj.js";const _={name:"DefaultLayout"},r={class:"flex min-h-screen bg-[#F3EBEB] text-gray-800"},p={class:"flex-1 overflow-y-auto p-8 space-y-24"};function d(f,l,u,i,x,m){const e=n;return s(),o("div",r,[a("div",p,[c(e)])])}const h=t(_,[["render",d]]);export{h as default};
