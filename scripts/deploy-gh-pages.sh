@@ -8,22 +8,22 @@ yarn generate
 
 echo "🚚 Preparando arquivos para deploy..."
 
-# Pasta temporária
-rm -rf dist
-mkdir dist
-cp -r .output/public/* dist/
+# Pasta temporária absoluta
+DIST_PATH=$(mktemp -d)
 
-# Alterna para gh-pages
+# Copia os arquivos do build para pasta temporária
+cp -r .output/public/* "$DIST_PATH"
+
+# Muda para a branch gh-pages
 git checkout gh-pages || git checkout -b gh-pages
 
-# Remove todos os arquivos (exceto .git e .gitignore)
+# Remove tudo (menos .git e .gitignore)
 find . -maxdepth 1 ! -name '.git' ! -name '.' ! -name '.gitignore' -exec rm -rf {} +
 
-# Copia os arquivos da pasta dist
-cp -r dist/* .
+# Copia os arquivos do build da pasta temporária para cá
+cp -r "$DIST_PATH"/* .
 
-
-# Cria o .nojekyll
+# Garante que arquivos com _ não sejam ignorados
 touch .nojekyll
 
 # Faz commit e push
@@ -31,7 +31,7 @@ git add .
 git commit -m "Deploy: static site to GitHub Pages" || echo "✅ Sem alterações para comitar"
 git push origin gh-pages
 
-# Volta para a branch main
+# Volta pra branch principal
 git checkout main
 
-echo "🚀 Deploy finalizado com sucesso!"
+echo "🚀 Deploy concluído com sucesso!"
