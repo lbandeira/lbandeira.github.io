@@ -20,7 +20,8 @@ git checkout gh-pages || git checkout -b gh-pages
 find . -maxdepth 1 ! -name '.git' ! -name '.' ! -name '.gitignore' -exec rm -rf {} +
 
 # Copia os arquivos da pasta dist
-cp -r ../dist/* .
+cp -r dist/* .
+
 
 # Cria o .nojekyll
 touch .nojekyll
