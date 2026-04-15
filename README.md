@@ -1,79 +1,91 @@
-# lbandeira.com.br and lbandeira.github.io
+# lbandeira.com.br — Next.js
 
-This repository contains the source code for the websites [lbandeira.com.br](https://lbandeira.com.br) and [lbandeira.github.io](https://lbandeira.github.io).
+Refatoração do site pessoal para Next.js 14 com App Router.
 
-### Nuxt Minimal Starter
+## Stack
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+- **Next.js 14** — App Router, Server Components, output estático
+- **TypeScript** — tipagem em todo o projeto
+- **CSS Modules** — estilização por componente, sem conflitos
+- **Google Fonts** — DM Serif Display + DM Mono + Instrument Sans
+- **Vercel** — deploy recomendado
 
-### Setup
+## Estrutura
 
-Make sure to install dependencies:
+```
+src/
+  app/
+    layout.tsx       # metadata, fontes globais
+    page.tsx         # página principal (todas as seções)
+    globals.css      # tokens CSS, reset, animações globais
+  components/
+    Navbar.tsx/.css  # navegação sticky com highlight de seção ativa
+    Hero.tsx/.css    # hero fullscreen com foto, nome e CTA
+    About.tsx/.css   # bio, skills por categoria, links externos
+    Projects.tsx/.css # grid de projetos com hover effects
+    Resume.tsx/.css  # timeline de formação e experiência
+    Contact.tsx/.css # contato + footer
+    ScrollReveal.tsx # observer de animações de entrada
+  data/
+    index.ts         # projetos e currículo (fonte única de verdade)
+```
+
+## Como rodar
 
 ```bash
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-### Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+# → http://localhost:3000
 ```
 
-### Production
-
-Build the application for production:
+## Deploy (Vercel)
 
 ```bash
-# npm
 npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+# gera pasta /out pronta para qualquer CDN ou GitHub Pages
 ```
 
-Locally preview production build:
+Ou conecte o repositório na Vercel — deploy automático a cada push na `main`.
 
-```bash
-# npm
-npm run preview
+## Customizações importantes
 
-# pnpm
-pnpm preview
+### Adicionar sua foto
+Em `src/components/Hero.tsx`, substitua o bloco `placeholder` por:
 
-# yarn
-yarn preview
+```tsx
+import Image from "next/image";
 
-# bun
-bun run preview
+<Image
+  src="/foto.jpg"
+  alt="Lais Bandeira"
+  fill
+  style={{ objectFit: "cover", objectPosition: "top" }}
+  priority
+/>
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Coloque `foto.jpg` na pasta `public/`.
+
+### Atualizar projetos
+Edite `src/data/index.ts` — o array `projects` alimenta a seção automaticamente.
+
+### Atualizar currículo
+Edite `src/data/index.ts` — os arrays `education`, `experience` e `skills` alimentam a seção Resume.
+
+### Adicionar CV em PDF
+Coloque `resume.pdf` em `public/` — o botão "download PDF" já aponta para `/resume.pdf`.
+
+### Atualizar email de contato
+Em `src/components/Contact.tsx`, altere o `href` do link de email.
+
+## Design
+
+Estética **editorial técnica** — tipografia forte (DM Serif Display), grid decorativo de fundo,
+tons terrosos (`#F5F2EC`) com acento laranja-ferrugem (`#C4551A`). Fundo escuro exclusivo
+na seção de projetos para criar contraste e hierarquia visual.
+
+Cores:
+- `--bg`: #F5F2EC (creme)
+- `--ink`: #1A1814 (quase preto)
+- `--accent`: #C4551A (ferrugem)
+- `--accent2`: #E8773A (laranja)
