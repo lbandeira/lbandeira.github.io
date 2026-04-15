@@ -4,23 +4,23 @@
 set -e
 
 # --- CONFIGURAÇÃO DE AMBIENTE ---
-# Define a raiz do projeto baseada na localização deste script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$ROOT_DIR"
 
 echo "📍 Diretório raiz identificado: $ROOT_DIR"
 
-# --- TRATAMENTO DE ALTERAÇÕES PENDENTES ---
-# Resolve o erro: "Please commit your changes or stash them"
-echo "📦 Guardando alterações temporárias no Stash..."
+# --- LIMPEZA E TRATAMENTO DE ALTERAÇÕES ---
+# O segredo para evitar o erro de checkout: stash com -u (untracked)
+echo "📦 Guardando alterações e limpando arquivos temporários..."
 HAS_CHANGES=$(git status --porcelain)
 if [ -n "$HAS_CHANGES" ]; then
-    git stash push -m "Temp stash durante deploy automático" --include-untracked
+    # -u inclui arquivos novos/untracked que o Next.js costuma gerar
+    git stash push -m "Temp stash durante deploy automático" -u
     STASHED=true
 else
     STASHED=false
-    echo "✅ Nada para guardar, diretório limpo."
+    echo "✅ Diretório limpo."
 fi
 
 # --- EXECUÇÃO DO BUILD ---
@@ -31,61 +31,57 @@ echo "🏗️  Gerando build estático com Next.js..."
 npm run build
 
 # --- VALIDAÇÃO DA PASTA OUT ---
-# Resolve o erro: "cp: out/*: No such file or directory"
 if [ ! -d "out" ] || [ -z "$(ls -A out)" ]; then
     echo "❌ ERRO: A pasta 'out' não foi gerada ou está vazia."
-    echo "Verifique se 'output: export' está configurado no seu next.config.js."
-    # Se falhar, precisamos devolver o stash antes de sair
     [ "$STASHED" = true ] && git stash pop
     exit 1
 fi
 
 echo "✅ Build gerado com sucesso!"
 
-# --- PREPARAÇÃO DO DEPLOY ---
+# --- PREPARAÇÃO DOS ARQUIVOS ---
 DIST_PATH=$(mktemp -d)
 cp -r out/* "$DIST_PATH"
 touch "$DIST_PATH/.nojekyll"
-
-# Garante a persistência do seu domínio customizado
 echo "www.lbandeira.com.br" > "$DIST_PATH/CNAME"
 
 # --- GERENCIAMENTO DE BRANCHES ---
-# Resolve o erro: "fatal: a branch named 'gh-pages' already exists"
 echo "🌿 Preparando branch gh-pages..."
+
+# Forçamos a troca com -f para garantir que nada trave a mudança
 if git show-ref --verify --quiet refs/heads/gh-pages; then
-    echo "A branch gh-pages já existe localmente. Trocando para ela..."
-    git checkout gh-pages
+    git checkout -f gh-pages
 else
-    echo "Criando nova branch gh-pages..."
     git checkout -b gh-pages
 fi
 
-# Sincroniza com o remoto para evitar conflitos de push
-git pull origin gh-pages --rebase || echo "Primeiro deploy ou branch apenas local."
+# Tenta sincronizar com o remoto se ele existir
+git fetch origin
+git reset --hard origin/gh-pages || echo "Branch remota não encontrada, iniciando do zero."
 
-# Limpa os arquivos antigos (mantendo o histórico do Git)
+# Limpa tudo na branch gh-pages (menos o que é do Git)
 find . -maxdepth 1 ! -name '.git' ! -name '.' ! -name '.gitignore' -exec rm -rf {} +
 
-# Move os novos arquivos do build para a branch
+# Traz os arquivos do build
 cp -r "$DIST_PATH"/. .
 
 # --- DEPLOY (COMMIT E PUSH) ---
 git add .
-if git commit -m "Deploy: atualização do site estático $(date +'%Y-%m-%d %H:%M:%S')"; then
-    echo "🚀 Subindo arquivos para o GitHub..."
+# Só faz commit se houver mudanças reais
+if git commit -m "Deploy: atualização $(date +'%Y-%m-%d %H:%M:%S')"; then
+    echo "🚀 Subindo para o GitHub..."
     git push origin gh-pages --force
 else
-    echo "✅ Sem alterações detectadas para subir."
+    echo "✅ Site já está atualizado no GitHub."
 fi
 
-# --- FINALIZAÇÃO E LIMPEZA ---
-echo "🔙 Voltando para a branch principal..."
-git checkout main
+# --- FINALIZAÇÃO ---
+echo "🔙 Retornando para a branch principal..."
+git checkout -f main
 
 if [ "$STASHED" = true ]; then
-    echo "📦 Restaurando suas alterações do Stash..."
-    git stash pop
+    echo "📦 Restaurando suas alterações..."
+    git stash pop || echo "⚠️ Aviso: Conflito ao restaurar stash. Verifique manualmente."
 fi
 
-echo "✨ Tudo pronto! Seu site deve atualizar em instantes em www.lbandeira.com.br"
+echo "✨ Deploy finalizado! Verifique em: www.lbandeira.com.br"
