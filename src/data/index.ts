@@ -13,9 +13,9 @@ export const projects = [
   {
     id: "autecla",
     title: "Autecla",
-    subtitle: "Teclado Assistivo",
+    subtitle: "Tecnologia Assistiva",
     description:
-      "Teclado virtual assistivo desenvolvido para pessoas com mobilidade reduzida. Projeto de impacto social com foco em acessibilidade e usabilidade.",
+      "Nosso objetivo é auxiliar no tratamento de crianças autistas por meio da concepção de um ecossistema integrado, que vai desde brinquedos inteligentes para a criança à um conjunto de ferramentas para pais e terapeutas.",
     tags: ["Acessibilidade", "React", "Produto", "Impacto Social"],
     url: "http://autecla.com.br/",
     year: "2023",
@@ -24,9 +24,9 @@ export const projects = [
   {
     id: "autoy",
     title: "Autoy",
-    subtitle: "Mina Maker",
+    subtitle: "Brinquedo inteligente",
     description:
-      "Projeto de automação residencial acessível desenvolvido no contexto da cultura Maker. Documentado no Notion como produto open-source.",
+      "Projeto de brinquedo inteligente para crianças autistas, baseado no tratamento ABA. ",
     tags: ["Maker", "Automação", "Hardware", "Open Source"],
     url: "https://minamaker.notion.site/Autoy-1cfa227432d980799ccbfe9f19d5da28",
     year: "2023",
@@ -39,9 +39,9 @@ export const resume = {
     {
       degree: "Mestrado em Ciência da Computação",
       institution: "CIn — UFPE",
-      period: "2023 — presente",
+      period: "2023 — 2026",
       description:
-        "Pesquisa em monitoramento em tempo real de sistemas elétricos. Foco em aquisição de dados, IoT e processamento de sinais.",
+        "Pesquisa em monitoramento em tempo real de baterias automotivas. Foco em aquisição de dados, IoT e processamento de sinais.",
     },
     {
       degree: "Bacharelado em Engenharia da Computação",

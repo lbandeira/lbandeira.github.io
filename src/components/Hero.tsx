@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import styles from "./Hero.module.css";
+import Image from "next/image";
 
 export default function Hero() {
   const scrollHintRef = useRef<HTMLDivElement>(null);
@@ -33,7 +34,7 @@ export default function Hero() {
           <p className={styles.bio}>
             Formada em Engenharia da Computação pelo CIn-UFPE, atualmente
             mestranda pesquisando soluções para monitoramento em tempo real
-            de sistemas elétricos. Movida pela curiosidade e pela vontade
+            de baterias automotivas. Movida pela curiosidade e pela vontade
             de transformar ideias em soluções que facilitem o dia a dia das
             pessoas.
           </p>
@@ -51,13 +52,16 @@ export default function Hero() {
           <div className={styles.imgWrap}>
             <div className={styles.imgFrame} />
             <div className={styles.imgBg}>
-              {/*
-                Substitua pelo componente Image do Next.js quando tiver a foto:
-                <Image src="/foto.jpg" alt="Lais Bandeira" fill style={{ objectFit: 'cover' }} />
-              */}
-              <div className={styles.placeholder}>
-                <span className={styles.initials}>LB</span>
-              </div>
+              
+
+                <Image
+                  src="/foto.jpg"
+                  alt="Lais Bandeira"
+                  fill
+                  style={{ objectFit: "cover", objectPosition: "top" }}
+                  priority
+                />
+
             </div>
             <div className={styles.coords}>8.0476° S, 34.8770° W</div>
           </div>
