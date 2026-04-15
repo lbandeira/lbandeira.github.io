@@ -1,58 +1,91 @@
 #!/bin/bash
+
+# Saia imediatamente se um comando falhar
 set -e
 
-# --- CONFIGURAÇÃO DE CAMINHO ---
-# Garante que o script saiba onde é a raiz do projeto, 
-# não importa de onde você o chame no terminal.
+# --- CONFIGURAÇÃO DE AMBIENTE ---
+# Define a raiz do projeto baseada na localização deste script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$ROOT_DIR"
 
-echo "📍 Validando diretório raiz: $ROOT_DIR"
+echo "📍 Diretório raiz identificado: $ROOT_DIR"
 
-# --- LIMPEZA E PREPARAÇÃO ---
-echo "📦 Salvando alterações temporárias (Stash)..."
-git stash push -m "Temp stash durante deploy" --include-untracked || echo "Nada para guardar."
+# --- TRATAMENTO DE ALTERAÇÕES PENDENTES ---
+# Resolve o erro: "Please commit your changes or stash them"
+echo "📦 Guardando alterações temporárias no Stash..."
+HAS_CHANGES=$(git status --porcelain)
+if [ -n "$HAS_CHANGES" ]; then
+    git stash push -m "Temp stash durante deploy automático" --include-untracked
+    STASHED=true
+else
+    STASHED=false
+    echo "✅ Nada para guardar, diretório limpo."
+fi
 
 # --- EXECUÇÃO DO BUILD ---
-echo "🔧 Instalando dependências e gerando build..."
+echo "🔧 Instalando dependências..."
 npm install
+
+echo "🏗️  Gerando build estático com Next.js..."
 npm run build
 
-# --- VALIDAÇÃO DO OUTPUT ---
-if [ ! -d "out" ]; then
-    echo "❌ ERRO CRÍTICO: A pasta 'out' não foi gerada pelo Next.js."
-    echo "Verifique se 'output: export' está no seu next.config.js"
+# --- VALIDAÇÃO DA PASTA OUT ---
+# Resolve o erro: "cp: out/*: No such file or directory"
+if [ ! -d "out" ] || [ -z "$(ls -A out)" ]; then
+    echo "❌ ERRO: A pasta 'out' não foi gerada ou está vazia."
+    echo "Verifique se 'output: export' está configurado no seu next.config.js."
+    # Se falhar, precisamos devolver o stash antes de sair
+    [ "$STASHED" = true ] && git stash pop
     exit 1
 fi
 
-# --- PROCESSO DE DEPLOY ---
-echo "🚚 Preparando arquivos para deploy..."
+echo "✅ Build gerado com sucesso!"
+
+# --- PREPARAÇÃO DO DEPLOY ---
 DIST_PATH=$(mktemp -d)
 cp -r out/* "$DIST_PATH"
 touch "$DIST_PATH/.nojekyll"
 
-# Se você usa CNAME no domínio customizado, garanta que ele persista:
-# (Substitua pelo seu domínio se não tiver o CNAME na pasta public)
+# Garante a persistência do seu domínio customizado
 echo "www.lbandeira.com.br" > "$DIST_PATH/CNAME"
 
-echo "🌿 Alternando para a branch gh-pages..."
-git checkout gh-pages || git checkout -b gh-pages
+# --- GERENCIAMENTO DE BRANCHES ---
+# Resolve o erro: "fatal: a branch named 'gh-pages' already exists"
+echo "🌿 Preparando branch gh-pages..."
+if git show-ref --verify --quiet refs/heads/gh-pages; then
+    echo "A branch gh-pages já existe localmente. Trocando para ela..."
+    git checkout gh-pages
+else
+    echo "Criando nova branch gh-pages..."
+    git checkout -b gh-pages
+fi
 
-# Limpa a branch de deploy (exceto o histórico git)
+# Sincroniza com o remoto para evitar conflitos de push
+git pull origin gh-pages --rebase || echo "Primeiro deploy ou branch apenas local."
+
+# Limpa os arquivos antigos (mantendo o histórico do Git)
 find . -maxdepth 1 ! -name '.git' ! -name '.' ! -name '.gitignore' -exec rm -rf {} +
 
-# Move os arquivos novos para a branch
+# Move os novos arquivos do build para a branch
 cp -r "$DIST_PATH"/. .
 
-# Commit e Push
+# --- DEPLOY (COMMIT E PUSH) ---
 git add .
-git commit -m "Deploy: static site update" || echo "✅ Sem mudanças para subir."
-git push origin gh-pages --force
+if git commit -m "Deploy: atualização do site estático $(date +'%Y-%m-%d %H:%M:%S')"; then
+    echo "🚀 Subindo arquivos para o GitHub..."
+    git push origin gh-pages --force
+else
+    echo "✅ Sem alterações detectadas para subir."
+fi
 
-# --- FINALIZAÇÃO ---
+# --- FINALIZAÇÃO E LIMPEZA ---
 echo "🔙 Voltando para a branch principal..."
 git checkout main
-git stash pop || echo "Nada para restaurar do stash."
 
-echo "🚀 Deploy concluído com sucesso!"
+if [ "$STASHED" = true ]; then
+    echo "📦 Restaurando suas alterações do Stash..."
+    git stash pop
+fi
+
+echo "✨ Tudo pronto! Seu site deve atualizar em instantes em www.lbandeira.com.br"
