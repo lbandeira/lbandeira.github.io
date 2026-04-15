@@ -1,0 +1,124 @@
+.section {
+  padding: 100px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.label::before {
+  content: attr(data-num);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--accent);
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: clamp(36px, 4vw, 52px);
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 48px;
+}
+
+.title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.text p {
+  font-size: 16px;
+  color: var(--ink2);
+  line-height: 1.85;
+  margin-bottom: 20px;
+}
+
+.text p strong { color: var(--ink); font-weight: 600; }
+.text p em { color: var(--accent); font-style: italic; }
+
+.links {
+  display: flex;
+  flex-direction: column;
+  margin-top: 32px;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+
+.link:hover { color: var(--accent); }
+
+.link span:last-child { opacity: 0.4; font-size: 16px; }
+
+.skills {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.skillLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.skillTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skillTag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink2);
+  border: 1px solid var(--line);
+  padding: 5px 12px;
+  letter-spacing: 0.04em;
+  transition: border-color 0.2s, color 0.2s;
+  background: rgba(245, 242, 236, 0.6);
+}
+
+.skillTag:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr; gap: 48px; }
+}
