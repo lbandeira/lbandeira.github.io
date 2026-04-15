@@ -1,64 +1,58 @@
-##!/bin/bash
-
-# Saia ao menor erro
+#!/bin/bash
 set -e
 
-# Salva o caminho da raiz do projeto (um nível acima de onde este script está)
-# Isso garante que o script funcione não importa de onde você o chame
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# --- CONFIGURAÇÃO DE CAMINHO ---
+# Garante que o script saiba onde é a raiz do projeto, 
+# não importa de onde você o chame no terminal.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$ROOT_DIR"
 
-echo "📍 Direitório atual: $(pwd)"
+echo "📍 Validando diretório raiz: $ROOT_DIR"
 
-echo "📦 Instalando dependências..."
+# --- LIMPEZA E PREPARAÇÃO ---
+echo "📦 Salvando alterações temporárias (Stash)..."
+git stash push -m "Temp stash durante deploy" --include-untracked || echo "Nada para guardar."
+
+# --- EXECUÇÃO DO BUILD ---
+echo "🔧 Instalando dependências e gerando build..."
 npm install
-
-echo "🔧 Gerando o build estático com Next.js..."
 npm run build
 
-# Verifica se a pasta 'out' existe
+# --- VALIDAÇÃO DO OUTPUT ---
 if [ ! -d "out" ]; then
-    echo "❌ Erro: A pasta 'out' não foi encontrada em $(pwd)"
+    echo "❌ ERRO CRÍTICO: A pasta 'out' não foi gerada pelo Next.js."
+    echo "Verifique se 'output: export' está no seu next.config.js"
     exit 1
 fi
 
+# --- PROCESSO DE DEPLOY ---
 echo "🚚 Preparando arquivos para deploy..."
-
-# 1. Garante que estamos na raiz e que não há sujeira atrapalhando o checkout
-git stash push -m "Temp stash durante deploy" --include-untracked
-
-# 2. Pasta temporária absoluta para o build
 DIST_PATH=$(mktemp -d)
 cp -r out/* "$DIST_PATH"
 touch "$DIST_PATH/.nojekyll"
 
-# 3. Tenta mudar para a gh-pages. Se não existir, cria.
-# Se já existir, apenas entra nela.
-if git rev-parse --verify gh-pages >/dev/null 2>&1; then
-    git checkout gh-pages
-else
-    git checkout -b gh-pages
-fi
+# Se você usa CNAME no domínio customizado, garanta que ele persista:
+# (Substitua pelo seu domínio se não tiver o CNAME na pasta public)
+echo "www.lbandeira.com.br" > "$DIST_PATH/CNAME"
 
-# 4. Sincroniza com o que está no servidor para evitar conflitos de push
-git pull origin gh-pages --rebase || echo "Primeiro deploy, nada para baixar."
+echo "🌿 Alternando para a branch gh-pages..."
+git checkout gh-pages || git checkout -b gh-pages
 
-# 5. Remove tudo (menos .git e .gitignore) para garantir um deploy limpo
+# Limpa a branch de deploy (exceto o histórico git)
 find . -maxdepth 1 ! -name '.git' ! -name '.' ! -name '.gitignore' -exec rm -rf {} +
 
-# 6. Traz os arquivos do build de volta
+# Move os arquivos novos para a branch
 cp -r "$DIST_PATH"/. .
 
-# 7. Commit e Push forçado (já que a gh-pages é uma branch de resultado, não de código)
+# Commit e Push
 git add .
-if git commit -m "Deploy: static site to GitHub Pages"; then
-    git push origin gh-pages --force
-else
-    echo "✅ Sem alterações para comitar."
-fi
+git commit -m "Deploy: static site update" || echo "✅ Sem mudanças para subir."
+git push origin gh-pages --force
 
-# 8. Volta para a branch principal e devolve seus arquivos pendentes
+# --- FINALIZAÇÃO ---
+echo "🔙 Voltando para a branch principal..."
 git checkout main
-git stash pop || echo "Nada para recuperar do stash."
+git stash pop || echo "Nada para restaurar do stash."
 
 echo "🚀 Deploy concluído com sucesso!"
