@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lais Bandeira — Engenheira de Computação</title>
+  <meta name="description" content="Engenheira de Computação formada pelo CIn-UFPE, mestranda pesquisando sistemas elétricos em tempo real. Entusiasta da cultura Maker." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F5F2EC;
+      --bg2: #EDEAE2;
+      --ink: #1A1814;
+      --ink2: #4A4640;
+      --ink3: #8A847C;
+      --accent: #C4551A;
+      --accent2: #E8773A;
+      --line: rgba(26,24,20,0.12);
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans: 'Instrument Sans', sans-serif;
+      --mono: 'DM Mono', monospace;
+      --max: 1100px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    /* ── SELECTION ── */
+    ::selection { background: var(--accent); color: #fff; }
+
+    /* ── GRID OVERLAY (decorative) ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 80px 80px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── NOISE GRAIN ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 40px; position: relative; z-index: 1; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--line);
+      background: rgba(245,242,236,0.92);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 40px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--ink2);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: lowercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-cta {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent) !important;
+      border: 1px solid var(--accent);
+      padding: 6px 14px;
+      border-radius: 2px;
+      transition: background 0.2s, color 0.2s !important;
+    }
+
+    .nav-cta:hover { background: var(--accent) !important; color: #fff !important; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding-top: 56px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-left { padding: 80px 0; }
+
+    .hero-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-tag::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(52px, 6vw, 80px);
+      line-height: 1.0;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-subtitle {
+      font-family: var(--serif);
+      font-size: clamp(20px, 2.5vw, 28px);
+      font-style: italic;
+      color: var(--ink3);
+      margin-bottom: 32px;
+      line-height: 1.3;
+    }
+
+    .hero-bio {
+      font-size: 15px;
+      color: var(--ink2);
+      max-width: 440px;
+      margin-bottom: 40px;
+      line-height: 1.75;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--ink);
+      color: var(--bg);
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: lowercase;
+      padding: 12px 24px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-primary:hover { background: var(--accent); transform: translateY(-1px); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: lowercase;
+      padding: 12px 24px;
+      text-decoration: none;
+      border: 1px solid var(--line);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    .hero-right {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 80px 0;
+      position: relative;
+    }
+
+    .hero-img-wrap {
+      position: relative;
+      width: 380px;
+      height: 460px;
+    }
+
+    .hero-img-frame {
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--accent);
+      transform: translate(12px, 12px);
+    }
+
+    .hero-img-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--bg2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Placeholder avatar (remove when adding real photo) */
+    .hero-avatar-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      color: var(--ink3);
+    }
+
+    .avatar-initials {
+      font-family: var(--serif);
+      font-size: 80px;
+      color: var(--ink);
+      line-height: 1;
+      opacity: 0.15;
+    }
+
+    .hero-coords {
+      position: absolute;
+      bottom: -20px;
+      right: 0;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--ink3);
+      letter-spacing: 0.08em;
+    }
+
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--ink3);
+      letter-spacing: 0.1em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 32px;
+      background: linear-gradient(to bottom, var(--ink3), transparent);
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ── SECTION BASE ── */
+    section {
+      padding: 100px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-label::before {
+      content: attr(data-num);
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 1px solid var(--accent);
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(36px, 4vw, 52px);
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 48px;
+    }
+
+    .section-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--line);
+      margin: 0;
+    }
+
+    /* ── ABOUT ── */
+    #about .about-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .about-text p {
+      font-size: 16px;
+      color: var(--ink2);
+      line-height: 1.85;
+      margin-bottom: 20px;
+    }
+
+    .about-text p strong { color: var(--ink); font-weight: 600; }
+
+    .about-text p em { color: var(--accent); font-style: italic; }
+
+    .about-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 32px;
+    }
+
+    .about-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+      text-decoration: none;
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+
+    .about-link:hover { color: var(--accent); }
+
+    .about-link span:last-child { opacity: 0.4; font-size: 16px; }
+
+    .skills-block { display: flex; flex-direction: column; gap: 28px; }
+
+    .skill-group-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--ink3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .skill-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--ink2);
+      border: 1px solid var(--line);
+      padding: 5px 12px;
+      letter-spacing: 0.04em;
+      transition: border-color 0.2s, color 0.2s;
+      background: rgba(245,242,236,0.6);
+    }
+
+    .skill-tag:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── PROJECTS ── */
+    #projects { background: var(--ink); }
+
+    #projects .section-label { color: var(--accent2); }
+    #projects .section-label::before { border-color: var(--accent2); }
+    #projects .section-title { color: var(--bg); }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .project-card {
+      background: var(--ink);
+      padding: 40px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .project-card:hover { background: #221F1A; }
+    .project-card:hover::before { transform: scaleX(1); }
+
+    .project-num {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.1em;
+    }
+
+    .project-title {
+      font-family: var(--serif);
+      font-size: 28px;
+      color: var(--bg);
+      line-height: 1.1;
+    }
+
+    .project-sub {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent2);
+      letter-spacing: 0.06em;
+    }
+
+    .project-desc {
+      font-size: 14px;
+      color: rgba(245,242,236,0.5);
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .project-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: rgba(255,255,255,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 3px 8px;
+      letter-spacing: 0.04em;
+    }
+
+    .project-arrow {
+      font-size: 20px;
+      color: rgba(255,255,255,0.2);
+      transition: color 0.2s, transform 0.2s;
+      align-self: flex-end;
+    }
+
+    .project-card:hover .project-arrow {
+      color: var(--accent);
+      transform: translate(3px, -3px);
+    }
+
+    /* ── RESUME ── */
+    #resume .resume-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+    }
+
+    .resume-col-title {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--ink3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .timeline { display: flex; flex-direction: column; }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 1px 1fr;
+      gap: 0 24px;
+      padding-bottom: 36px;
+      position: relative;
+    }
+
+    .timeline-item:last-child { padding-bottom: 0; }
+
+    .timeline-line {
+      width: 1px;
+      background: var(--line);
+      position: relative;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+      outline: 1px solid var(--accent);
+    }
+
+    .timeline-period {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--ink3);
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+    .timeline-role {
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+
+    .timeline-place {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      letter-spacing: 0.04em;
+    }
+
+    .timeline-desc {
+      font-size: 13px;
+      color: var(--ink3);
+      line-height: 1.7;
+    }
+
+    .resume-actions {
+      margin-top: 56px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--bg2); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .contact-headline {
+      font-family: var(--serif);
+      font-size: clamp(40px, 4.5vw, 60px);
+      line-height: 1.1;
+      color: var(--ink);
+    }
+
+    .contact-headline em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .contact-sub {
+      margin-top: 20px;
+      font-size: 15px;
+      color: var(--ink2);
+      line-height: 1.75;
+      max-width: 400px;
+    }
+
+    .contact-links { display: flex; flex-direction: column; gap: 0; }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--line);
+      text-decoration: none;
+      color: var(--ink);
+      transition: color 0.2s;
+    }
+
+    .contact-link:first-child { border-top: 1px solid var(--line); }
+
+    .contact-link:hover { color: var(--accent); }
+
+    .contact-link-name {
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .contact-link-handle {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--ink3);
+    }
+
+    .contact-link:hover .contact-link-handle { color: var(--accent); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      padding: 28px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-copy {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: rgba(245,242,236,0.3);
+      letter-spacing: 0.06em;
+    }
+
+    .footer-copy span { color: var(--accent); }
+
+    .footer-built {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: rgba(245,242,236,0.2);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .container { padding: 0 24px; }
+      .nav-inner { padding: 0 24px; }
+      .footer-inner { padding: 0 24px; }
+      .nav-links { display: none; }
+
+      #hero {
+        grid-template-columns: 1fr;
+        padding-top: 80px;
+        min-height: auto;
+      }
+
+      .hero-right { display: none; }
+      .hero-left { padding: 60px 0 48px; }
+
+      #about .about-grid,
+      #resume .resume-grid,
+      .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+
+      .projects-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAVIGATION ── -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">lb<span>.</span>dev</a>
+      <ul class="nav-links">
+        <li><a href="#about">sobre</a></li>
+        <li><a href="#projects">projetos</a></li>
+        <li><a href="#resume">currículo</a></li>
+        <li><a href="#contact" class="nav-cta">contato</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section id="hero">
+    <div class="container" style="display:contents">
+      <div style="max-width:var(--max);margin:0 auto;padding:0 40px;display:grid;grid-template-columns:1fr 1fr;align-items:center;width:100%;gap:40px;" class="hero-wrap">
+
+        <div class="hero-left reveal">
+          <div class="hero-tag" data-location="Recife, PE">Engenheira · Pesquisadora · Maker</div>
+          <h1 class="hero-name">Lais<br><em>Bandeira</em></h1>
+          <p class="hero-subtitle">Sistemas elétricos,<br>cultura Maker, impacto real.</p>
+          <p class="hero-bio">
+            Formada em Engenharia da Computação pelo CIn-UFPE, atualmente mestranda pesquisando soluções para monitoramento em tempo real de sistemas elétricos. Movida pela curiosidade e pela vontade de transformar ideias em soluções que facilitem o dia a dia das pessoas.
+          </p>
+          <div class="hero-actions">
+            <a href="#projects" class="btn-primary">ver projetos →</a>
+            <a href="#resume" class="btn-secondary">currículo</a>
+          </div>
+        </div>
+
+        <div class="hero-right reveal reveal-delay-2">
+          <div class="hero-img-wrap">
+            <div class="hero-img-frame"></div>
+            <div class="hero-img-bg">
+              <!--
+                SUBSTITUIR: <img src="/foto.jpg" alt="Lais Bandeira" style="width:100%;height:100%;object-fit:cover;" />
+              -->
+              <div class="hero-avatar-placeholder">
+                <div class="avatar-initials">LB</div>
+              </div>
+            </div>
+            <div class="hero-coords">8.0476° S, 34.8770° W</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="hero-scroll-hint" style="position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:10;">
+      <div class="scroll-line"></div>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--ink3);letter-spacing:0.1em;">scroll</span>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── ABOUT ── -->
+  <section id="about">
+    <div class="container">
+      <div class="section-label" data-num="01">Sobre mim</div>
+      <h2 class="section-title reveal">Engenharia com<br><em style="font-style:italic;color:var(--accent);">propósito.</em></h2>
+
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p>
+            Sou <strong>Lais Bandeira</strong>, engenheira de computação formada pelo <strong>CIn-UFPE</strong> em Recife. Atualmente curso o mestrado na mesma instituição, onde desenvolvo pesquisa em <em>monitoramento em tempo real de sistemas elétricos</em>.
+          </p>
+          <p>
+            Minha trajetória une rigor técnico com criatividade prática: construo desde dashboards IoT com Web Bluetooth até teclados assistivos para pessoas com mobilidade reduzida. Acredito que a tecnologia mais poderosa é aquela que <strong>simplifica a vida das pessoas</strong>.
+          </p>
+          <p>
+            Entusiasta da <em>cultura Maker</em>, acredito no aprendizado pelo fazer — protótipos, iterações, e a alegria de ver uma ideia ganhar forma física ou digital.
+          </p>
+
+          <div class="about-links">
+            <a href="https://github.com/lbandeira" target="_blank" class="about-link">
+              <span>GitHub</span>
+              <span>↗</span>
+            </a>
+            <a href="https://linkedin.com/in/laisbandeira" target="_blank" class="about-link">
+              <span>LinkedIn</span>
+              <span>↗</span>
+            </a>
+            <a href="http://lattes.cnpq.br/" target="_blank" class="about-link">
+              <span>Currículo Lattes</span>
+              <span>↗</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="skills-block reveal reveal-delay-2">
+          <div>
+            <div class="skill-group-label">Frontend</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Vue.js</span>
+              <span class="skill-tag">Nuxt</span>
+              <span class="skill-tag">React</span>
+              <span class="skill-tag">TypeScript</span>
+              <span class="skill-tag">Tailwind CSS</span>
+            </div>
+          </div>
+          <div>
+            <div class="skill-group-label">Backend</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Node.js</span>
+              <span class="skill-tag">Python</span>
+              <span class="skill-tag">REST APIs</span>
+            </div>
+          </div>
+          <div>
+            <div class="skill-group-label">Hardware / IoT</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Arduino</span>
+              <span class="skill-tag">ESP32</span>
+              <span class="skill-tag">Web Bluetooth</span>
+              <span class="skill-tag">Protocolos IoT</span>
+            </div>
+          </div>
+          <div>
+            <div class="skill-group-label">Pesquisa</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Sistemas Elétricos</span>
+              <span class="skill-tag">Aquisição de Dados</span>
+              <span class="skill-tag">Processamento de Sinais</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── PROJECTS ── -->
+  <section id="projects">
+    <div class="container">
+      <div class="section-label" data-num="02">Projetos</div>
+      <h2 class="section-title" style="color:var(--bg);" >Coisas que<br><em style="font-style:italic;color:var(--accent2);">construí.</em></h2>
+
+      <div class="projects-grid">
+
+        <a href="https://battery.lbandeira.com.br/" target="_blank" class="project-card reveal">
+          <div class="project-num">001 — 2024</div>
+          <div class="project-sub">IoT · Web Bluetooth</div>
+          <div class="project-title">Battery<br>Dashboard</div>
+          <p class="project-desc">Dashboard de monitoramento em tempo real de baterias via Web Bluetooth. Visualiza tensão, corrente e temperatura com exportação de dados.</p>
+          <div class="project-tags">
+            <span class="project-tag">IoT</span>
+            <span class="project-tag">Web BLE</span>
+            <span class="project-tag">JavaScript</span>
+            <span class="project-tag">Hardware</span>
+          </div>
+          <div class="project-arrow">↗</div>
+        </a>
+
+        <a href="http://autecla.com.br/" target="_blank" class="project-card reveal reveal-delay-2">
+          <div class="project-num">002 — 2023</div>
+          <div class="project-sub">Acessibilidade · Produto</div>
+          <div class="project-title">Autecla</div>
+          <p class="project-desc">Teclado virtual assistivo para pessoas com mobilidade reduzida. Projeto de impacto social desenvolvido com foco em usabilidade e inclusão.</p>
+          <div class="project-tags">
+            <span class="project-tag">Acessibilidade</span>
+            <span class="project-tag">React</span>
+            <span class="project-tag">Produto</span>
+            <span class="project-tag">Impacto Social</span>
+          </div>
+          <div class="project-arrow">↗</div>
+        </a>
+
+        <a href="https://minamaker.notion.site/Autoy-1cfa227432d980799ccbfe9f19d5da28" target="_blank" class="project-card reveal reveal-delay-3">
+          <div class="project-num">003 — 2023</div>
+          <div class="project-sub">Maker · Hardware</div>
+          <div class="project-title">Autoy</div>
+          <p class="project-desc">Projeto de automação residencial acessível no contexto da cultura Maker. Documentado como produto open-source pelo coletivo Mina Maker.</p>
+          <div class="project-tags">
+            <span class="project-tag">Maker</span>
+            <span class="project-tag">Automação</span>
+            <span class="project-tag">Hardware</span>
+            <span class="project-tag">Open Source</span>
+          </div>
+          <div class="project-arrow">↗</div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider" style="background:rgba(255,255,255,0.06);"></div>
+
+  <!-- ── RESUME ── -->
+  <section id="resume">
+    <div class="container">
+      <div class="section-label" data-num="03">Currículo</div>
+      <h2 class="section-title reveal">Formação &amp;<br><em style="font-style:italic;color:var(--accent);">experiência.</em></h2>
+
+      <div class="resume-grid">
+
+        <div class="reveal">
+          <div class="resume-col-title">// formação acadêmica</div>
+          <div class="timeline">
+
+            <div class="timeline-item">
+              <div class="timeline-line"><div class="timeline-dot"></div></div>
+              <div>
+                <div class="timeline-period">2023 — presente</div>
+                <div class="timeline-role">Mestrado em Ciência da Computação</div>
+                <div class="timeline-place">CIn — UFPE</div>
+                <div class="timeline-desc">Pesquisa em monitoramento em tempo real de sistemas elétricos. Foco em aquisição de dados, IoT e processamento de sinais.</div>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-line"><div class="timeline-dot"></div></div>
+              <div>
+                <div class="timeline-period">2018 — 2023</div>
+                <div class="timeline-role">Bacharelado em Engenharia da Computação</div>
+                <div class="timeline-place">CIn — UFPE</div>
+                <div class="timeline-desc">Formação em hardware, software e sistemas embarcados. TCC na área de sistemas elétricos inteligentes.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="reveal reveal-delay-2">
+          <div class="resume-col-title">// experiência</div>
+          <div class="timeline">
+
+            <div class="timeline-item">
+              <div class="timeline-line"><div class="timeline-dot"></div></div>
+              <div>
+                <div class="timeline-period">2023 — presente</div>
+                <div class="timeline-role">Pesquisadora</div>
+                <div class="timeline-place">CIn — UFPE</div>
+                <div class="timeline-desc">Desenvolvimento de soluções para monitoramento em tempo real de sistemas elétricos. Projeto e implementação de dashboards e protocolos de comunicação.</div>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-line"><div class="timeline-dot"></div></div>
+              <div>
+                <div class="timeline-period">2021 — presente</div>
+                <div class="timeline-role">Desenvolvedora Full Stack</div>
+                <div class="timeline-place">Projetos independentes</div>
+                <div class="timeline-desc">Criação de aplicações web com foco em IoT, acessibilidade e cultura Maker. Battery Dashboard, Autecla, Autoy.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="resume-actions reveal">
+        <a href="https://linkedin.com/in/laisbandeira" target="_blank" class="btn-primary">ver no LinkedIn ↗</a>
+        <a href="#" class="btn-secondary">download PDF</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── CONTACT ── -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-grid">
+
+        <div class="reveal">
+          <div class="section-label" data-num="04">Contato</div>
+          <h2 class="contact-headline">Vamos<br>construir algo<br><em>juntos?</em></h2>
+          <p class="contact-sub">Aberta a conversas sobre pesquisa, colaborações em projetos, oportunidades ou simplesmente trocar ideias sobre tecnologia e inovação.</p>
+        </div>
+
+        <div class="contact-links reveal reveal-delay-2">
+          <a href="mailto:lais@lbandeira.com.br" class="contact-link">
+            <span class="contact-link-name">Email</span>
+            <span class="contact-link-handle">lais@lbandeira.com.br</span>
+          </a>
+          <a href="https://linkedin.com/in/laisbandeira" target="_blank" class="contact-link">
+            <span class="contact-link-name">LinkedIn</span>
+            <span class="contact-link-handle">in/laisbandeira</span>
+          </a>
+          <a href="https://github.com/lbandeira" target="_blank" class="contact-link">
+            <span class="contact-link-name">GitHub</span>
+            <span class="contact-link-handle">@lbandeira</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-copy">© 2025 <span>Lais Bandeira</span> — Recife, PE</div>
+      <div class="footer-built">Next.js · Vercel · feito com cuidado</div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Hide scroll hint after scrolling
+    const scrollHint = document.querySelector('.hero-scroll-hint');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        scrollHint.style.opacity = '0';
+        scrollHint.style.transition = 'opacity 0.4s';
+      }
+    }, { passive: true });
+
+    // Active nav link on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 100) current = s.id;
+      });
+      navLinks.forEach(a => {
+        a.style.color = a.getAttribute('href') === `#${current}` ? 'var(--accent)' : '';
+      });
+    }, { passive: true });
+  </script>
+
+</body>
+</html>
