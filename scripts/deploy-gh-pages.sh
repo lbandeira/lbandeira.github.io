@@ -23,29 +23,42 @@ if [ ! -d "out" ]; then
 fi
 
 echo "🚚 Preparando arquivos para deploy..."
+
+# 1. Garante que estamos na raiz e que não há sujeira atrapalhando o checkout
+git stash push -m "Temp stash durante deploy" --include-untracked
+
+# 2. Pasta temporária absoluta para o build
 DIST_PATH=$(mktemp -d)
-
-# Copia usando o caminho garantido
 cp -r out/* "$DIST_PATH"
-
-# Garante que arquivos com _ não sejam ignorados pelo Jekyll
 touch "$DIST_PATH/.nojekyll"
 
-# Muda para a branch gh-pages
-git checkout gh-pages || git checkout -b gh-pages
+# 3. Tenta mudar para a gh-pages. Se não existir, cria.
+# Se já existir, apenas entra nela.
+if git rev-parse --verify gh-pages >/dev/null 2>&1; then
+    git checkout gh-pages
+else
+    git checkout -b gh-pages
+fi
 
-# Remove arquivos antigos da branch de deploy
+# 4. Sincroniza com o que está no servidor para evitar conflitos de push
+git pull origin gh-pages --rebase || echo "Primeiro deploy, nada para baixar."
+
+# 5. Remove tudo (menos .git e .gitignore) para garantir um deploy limpo
 find . -maxdepth 1 ! -name '.git' ! -name '.' ! -name '.gitignore' -exec rm -rf {} +
 
-# Move os arquivos novos
+# 6. Traz os arquivos do build de volta
 cp -r "$DIST_PATH"/. .
 
-# Faz commit e push
+# 7. Commit e Push forçado (já que a gh-pages é uma branch de resultado, não de código)
 git add .
-git commit -m "Deploy: static site to GitHub Pages" || echo "✅ Sem alterações para comitar"
-git push origin gh-pages --force
+if git commit -m "Deploy: static site to GitHub Pages"; then
+    git push origin gh-pages --force
+else
+    echo "✅ Sem alterações para comitar."
+fi
 
-# Volta pra branch principal (verifique se a sua chama 'main' ou 'master')
+# 8. Volta para a branch principal e devolve seus arquivos pendentes
 git checkout main
+git stash pop || echo "Nada para recuperar do stash."
 
 echo "🚀 Deploy concluído com sucesso!"
